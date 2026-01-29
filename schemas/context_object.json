@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LACP Context Object",
+  "description": "Header object required for all LACP packets to maintain state and security context.",
+  "type": "object",
+  "required": [
+    "protocol",
+    "mission_id",
+    "trace_id",
+    "objective",
+    "trust_level"
+  ],
+  "properties": {
+    "protocol": {
+      "type": "string",
+      "const": "LACP/1.0",
+      "description": "Protocol version identifier."
+    },
+    "mission_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Global identifier for the high-level mission."
+    },
+    "trace_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this specific interaction chain."
+    },
+    "objective": {
+      "type": "string",
+      "description": "The immutable original goal of the mission. Agents cannot modify this.",
+      "readOnly": true
+    },
+    "trust_level": {
+      "type": "string",
+      "enum": ["INTERNAL", "API", "MCP", "WEBHOOK"],
+      "description": "Security clearance level of the calling agent."
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of negative constraints (e.g., 'Do not access internet')."
+    },
+    "history_vector": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "description": "Compressed vector embedding of the mission history for rapid context loading."
+    },
+    "payload": {
+      "type": "object",
+      "description": "The actual tool input or message content.",
+      "additionalProperties": true
+    }
+  }
+}
