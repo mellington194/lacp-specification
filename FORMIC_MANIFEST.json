@@ -1,0 +1,48 @@
+{
+  "workspace": "lacp-specification",
+  "domain": "infrastructure",
+  "strategy_link": "../envalr-bundle",
+  "modules": [
+    {
+      "code_name": "SafetyOS",
+      "type": "talent",
+      "role": "SECURITY",
+      "spec_path": "talents/safety_os.spec.md"
+    },
+    {
+      "code_name": "Social Bot",
+      "type": "talent",
+      "role": "PRODUCER",
+      "spec_path": "talents/social_bot.spec.md"
+    },
+    {
+      "code_name": "LuxeStream",
+      "type": "talent",
+      "role": "ANALYST",
+      "spec_path": "talents/luxestream.spec.md"
+    },
+    {
+      "code_name": "Antigravity",
+      "type": "talent",
+      "role": "COACH",
+      "spec_path": "talents/antigravity.spec.md"
+    },
+    {
+      "code_name": "Aurum",
+      "type": "talent",
+      "role": "TREASURER",
+      "spec_path": "talents/finance.spec.md"
+    },
+    {
+      "code_name": "Codex",
+      "type": "talent",
+      "role": "ARCHIVIST",
+      "spec_path": "talents/knowledge.spec.md"
+    }
+  ],
+  "governance": {
+    "decision_log": "programme/DECISION_LOG.md",
+    "raid_log": "programme/RAID_LOG.md",
+    "code_names": "programme/CODE_NAMES.md"
+  }
+}
