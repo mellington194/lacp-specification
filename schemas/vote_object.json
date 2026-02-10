@@ -19,7 +19,7 @@
     },
     "role": {
       "type": "string",
-      "enum": ["REVIEWER", "SECURITY", "ARCHITECT", "TESTER"],
+      "enum": ["REVIEWER", "SECURITY", "ARCHITECT", "TESTER", "EXPLORER", "BUILDER", "VALIDATOR", "DOCUMENTER", "COACH", "ANALYST", "TREASURER", "ARCHIVIST"],
       "description": "The specialized role of the agent."
     },
     "verdict": {
@@ -47,6 +47,17 @@
     "salt": {
       "type": "string",
       "description": "Random salt used during the Commit phase (only present in Reveal phase)."
+    },
+    "vote_weight": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 2.0,
+      "default": 1.0,
+      "description": "Personality-derived vote weight. Calculated from agent's OCEAN Conscientiousness dimension. Default 1.0 for backwards compatibility. See consensus/personality.spec.md."
+    },
+    "archetype": {
+      "type": "string",
+      "description": "Agent personality archetype name (e.g., Scholar, Sentinel, Paladin). Informational only."
     }
   }
 }

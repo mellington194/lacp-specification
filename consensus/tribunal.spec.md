@@ -37,3 +37,115 @@ Where $\mathbf{v}_i$ is the embedding vector of Agent $i$'s `reasoning` text.
 *   **Safe Zone:** Score < 0.85
 *   **Warning:** 0.85 - 0.95
 *   **Rejection:** > 0.95 (Identical reasoning detected).
+
+## 4. Dynamic Vote Weighting
+Legacy Tribunal tallying used static, role-based vote weights (e.g., Security = 1.2, Reviewer = 1.0). AAPS replaces this with **personality-derived weights** that evolve alongside the agent.
+
+### 4.1 Weight Derivation
+Each agent's `tribunalVoteWeight` is derived from the **Conscientiousness** dimension of its OCEAN personality vector:
+
+```
+tribunalVoteWeight = 0.5 + (conscientiousness * 0.7)
+```
+
+*   **Range:** `0.5`–`1.15`.
+*   An agent with `C = 0.90` (e.g., QA Reviewer / Protector) carries weight `1.13`.
+*   An agent with `C = 0.45` (e.g., Copywriter / Rogue) carries weight `0.815`.
+
+### 4.2 Weighted Tally
+The weighted tally replaces simple vote counting. Each vote is scaled by the casting agent's weight:
+
+```
+weightedScore = sum(vote_i * weight_i) / sum(weight_i)
+```
+
+Where `vote_i` is `+1` (APPROVE) or `-1` (REJECT), and `weight_i` is the agent's `tribunalVoteWeight`.
+
+*   **Threshold:** `weightedScore > 0.0` → APPROVE; `weightedScore <= 0.0` → REJECT (Safety Default).
+*   A tie or exact zero defaults to REJECT, preserving the existing safety-first principle.
+
+### 4.3 Backwards Compatibility
+Default OCEAN scores produce weights in the range `~0.85`–`~1.15` for all standard archetypes. When all agents have similar Conscientiousness, the weighted tally is functionally equivalent to a simple majority vote — ensuring no behavioural change for swarms that have not yet adopted AAPS.
+
+### 4.4 Weight Evolution
+Weights are not static. As an agent's personality evolves (see `consensus/personality.spec.md` Section 5), its vote weight shifts accordingly:
+*   An agent that repeatedly **loses** Tribunal votes gains Agreeableness and Neuroticism, which do not directly affect weight — but repeated `accuracy_feedback` events increase Conscientiousness, which *does*.
+*   An agent that is consistently overruled will gradually become more deferential (higher Agreeableness), reducing its likelihood of dissenting in the first place.
+
+## 5. Extensible Trigger Conditions
+Tribunal convocation is no longer limited to a generic confidence threshold. Domain-specific triggers can be registered per-swarm via the `TribunalTriggerRegistry`.
+
+### 5.1 Trigger Registry
+Each swarm registers a set of named triggers. A trigger is a predicate function that receives the current task context and returns a boolean.
+
+```typescript
+interface TribunalTrigger {
+  name: string;
+  description: string;
+  evaluate(context: TaskContext): boolean;
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+}
+```
+
+Triggers are evaluated after each agent completes its task. If *any* trigger returns `true`, a Tribunal is convened.
+
+### 5.2 LuxeStream Example Triggers
+
+| # | Trigger | Condition | Priority |
+| :--- | :--- | :--- | :--- |
+| 1 | `low_confidence` | Any agent's confidence < 0.6 | MEDIUM |
+| 2 | `grade_auth_conflict` | Grader says "Excellent" but Authenticator flags concerns | HIGH |
+| 3 | `high_value_item` | Estimated price > £5,000 | HIGH |
+| 4 | `rare_item` | Low match score against known pattern database | MEDIUM |
+| 5 | `ambiguous_defect` | Grader uncertain whether feature is intentional or damage | MEDIUM |
+
+### 5.3 Personality Modulation of Triggers
+Trigger thresholds are not fixed — they are modulated by the personalities of the agents involved:
+*   **Trigger 1 (Low Confidence):** The 0.6 threshold is a *base*. The QA Reviewer's `escalationThreshold` (derived from Neuroticism) may lower this further for cautious agents, or raise it for risk-tolerant ones.
+*   **Trigger 2 (Grade/Auth Conflict):** The Grader's `confidenceThreshold` determines how certain the grader must be to override the Authenticator's concern. A highly conscientious Grader with a high confidence threshold is less likely to trigger this — it would only fire on genuine disagreement, not marginal cases.
+*   **Triggers 3–5:** These are domain-specific and use fixed thresholds, but the *decision to act* on the Tribunal outcome is personality-influenced (Section 6).
+
+### 5.4 Custom Registration
+Swarms register triggers at initialisation:
+
+```typescript
+TribunalTriggerRegistry.register('luxestream', [
+  new LowConfidenceTrigger(0.6),
+  new GradeAuthConflictTrigger(),
+  new HighValueItemTrigger(5000),
+  new RareItemTrigger(0.3),
+  new AmbiguousDefectTrigger(),
+]);
+```
+
+Triggers can be added, removed, or modified at runtime without restarting the swarm.
+
+## 6. Personality-Modulated Consensus
+The interplay between OCEAN personality dimensions and Tribunal behaviour creates emergent consensus dynamics that go beyond simple voting.
+
+### 6.1 Neuroticism → Escalation Frequency
+An agent with high Neuroticism (e.g., Authenticator at `N = 0.80`) has a lower `escalationThreshold`. This means:
+*   It triggers Tribunals more often, even for moderate uncertainty.
+*   The swarm benefits from this "canary" behaviour — the most anxious agent surfaces edge cases that calmer agents might overlook.
+*   Over time, if escalations prove unnecessary (agent wins Tribunal repeatedly), Neuroticism drifts down slightly, reducing false positives.
+
+### 6.2 Conscientiousness → Vote Influence
+An agent with high Conscientiousness (e.g., QA Reviewer at `C = 0.95`) carries more weight in Tribunal votes:
+*   Its `tribunalVoteWeight` of `~1.17` means its vote counts roughly 40% more than a low-Conscientiousness agent (`~0.815`).
+*   This is by design — the most meticulous agents should have the strongest voice in quality decisions.
+
+### 6.3 Agreeableness → Deference
+An agent with high Agreeableness (e.g., Copywriter at `A = 0.70`) tends to defer to consensus:
+*   If the preliminary tally (before the agent's own vote) already shows a strong majority, a highly agreeable agent may **abstain** rather than dissent.
+*   Abstention threshold: `abs(preliminaryScore) > agreeableness * 0.8`.
+*   This reduces noise in Tribunal outcomes but preserves strong independent objections (an agent will still vote if it has high confidence and low Agreeableness).
+
+### 6.4 Combined Effects
+The personality dimensions interact to produce nuanced behaviour:
+*   **High N + High C** (e.g., QA Reviewer): Escalates often *and* carries heavy weight — the "quality gatekeeper."
+*   **Low N + High O** (e.g., Copywriter): Rarely escalates, tolerates uncertainty, but when forced into a Tribunal, votes creatively.
+*   **High N + Low C** (unlikely in standard archetypes): Would escalate frequently but carry little weight — a "worrier without authority."
+*   **High A + High C** (e.g., Identifier): Defers to consensus but, when the consensus is weak, steps in with authoritative weight.
+
+### 6.5 Cross-Reference
+See `consensus/personality.spec.md` for the full OCEAN derivation rules, archetype definitions, and evolution mechanics.

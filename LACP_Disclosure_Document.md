@@ -1,7 +1,7 @@
 # LACP Specification (Modularized)
 
-**Date:** January 29, 2026
-**Version:** 1.1.0 (Refactored)
+**Date:** February 7, 2026
+**Version:** 1.2.0
 
 ## 1. Introduction
 
@@ -12,6 +12,7 @@ The **LLM-Agent Communication Protocol (LACP)** is a strict Layer 7 protocol for
 ### 2.1 Core Kernel
 *   **[Transport Layer](core/transport.spec.md):** Routing, Rate Limiting, and Headers.
 *   **[Context & State](core/context.spec.md):** The `Context Object` and Immutability rules.
+*   **[Gene Pool Protocol](core/gene_pool.spec.md):** Cross-swarm pattern propagation and shared learning.
 
 ### 2.2 Security
 *   **[PII Redaction](security/pii_redaction.spec.md):** NER-based data hygiene.
@@ -20,6 +21,7 @@ The **LLM-Agent Communication Protocol (LACP)** is a strict Layer 7 protocol for
 ### 2.3 Consensus (The Tribunal)
 *   **[Tribunal Protocol](consensus/tribunal.spec.md):** The Commit-Reveal voting mechanism.
 *   **[Sycophancy Detection](consensus/sycophancy.spec.md):** Vector-based groupthink mitigation.
+*   **[Personality Profiles](consensus/personality.spec.md):** OCEAN-based Adaptive Agent Personality System (AAPS).
 
 ### 2.4 Talents (Agent Roles)
 *   **[Base Interface](talents/interface.spec.md):** Contract for all agents.
@@ -27,8 +29,23 @@ The **LLM-Agent Communication Protocol (LACP)** is a strict Layer 7 protocol for
 *   **[Reviewer](talents/reviewer.spec.md)**
 *   **[Security](talents/security.spec.md)**
 *   **[Tester](talents/tester.spec.md)**
+*   **[SafetyOS](talents/safety_os.spec.md)**
+*   **[Social Bot](talents/social_bot.spec.md)**
+*   **[LuxeStream](talents/luxestream.spec.md)**
+*   **[Antigravity](talents/antigravity.spec.md)**
+*   **[Finance / Aurum](talents/finance.spec.md)**
+*   **[Knowledge / Codex](talents/knowledge.spec.md)**
 
 ## 3. Schemas
 Formal JSON schemas for data interchange:
 *   [Context Object](schemas/context_object.json)
 *   [Vote Object](schemas/vote_object.json)
+
+## 4. Changelog
+
+### v1.2.0 (February 7, 2026)
+*   **Added:** Adaptive Agent Personality System (AAPS) — OCEAN-based parametric behaviour
+*   **Added:** Gene Pool cross-swarm protocol specification
+*   **Updated:** LuxeStream talent spec (full 6-agent swarm architecture)
+*   **Updated:** Tribunal spec (dynamic vote weighting, extensible triggers)
+*   **Updated:** Vote Object schema (vote_weight, archetype fields, expanded roles)
