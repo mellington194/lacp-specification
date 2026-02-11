@@ -89,7 +89,7 @@ interface TribunalTrigger {
 
 Triggers are evaluated after each agent completes its task. If *any* trigger returns `true`, a Tribunal is convened.
 
-### 5.2 LuxeStream Example Triggers
+### 5.2 Provenance Example Triggers
 
 | # | Trigger | Condition | Priority |
 | :--- | :--- | :--- | :--- |
@@ -109,7 +109,7 @@ Trigger thresholds are not fixed — they are modulated by the personalities of 
 Swarms register triggers at initialisation:
 
 ```typescript
-TribunalTriggerRegistry.register('luxestream', [
+TribunalTriggerRegistry.register('provenance', [
   new LowConfidenceTrigger(0.6),
   new GradeAuthConflictTrigger(),
   new HighValueItemTrigger(5000),

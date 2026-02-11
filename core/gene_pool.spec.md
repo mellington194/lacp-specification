@@ -4,7 +4,7 @@
 
 The **Gene Pool** is LACP's cross-swarm knowledge propagation mechanism. It enables patterns, learnings, and strategies discovered by one swarm to benefit all others — implementing "collective intelligence" across the Swarm-of-Swarms.
 
-Without the Gene Pool, each swarm operates in isolation: LuxeStream learns that "Chanel serial codes moved from inside the flap to inside the pocket in 2021," but that knowledge dies with the session. The Gene Pool ensures that learning persists, propagates, and evolves — so the next time any swarm encounters a Chanel item, the pattern is already available.
+Without the Gene Pool, each swarm operates in isolation: Provenance learns that "Chanel serial codes moved from inside the flap to inside the pocket in 2021," but that knowledge dies with the session. The Gene Pool ensures that learning persists, propagates, and evolves — so the next time any swarm encounters a Chanel item, the pattern is already available.
 
 **Design Principles:**
 *   **Asynchronous** — Swarms push and pull patterns on their own schedules. No synchronous cross-swarm calls.
@@ -71,7 +71,7 @@ Discovery → Extraction → Fitness Scoring → Storage → Propagation → Inj
 An agent completes a task and generates learnings. Discovery happens implicitly — the Coordinator monitors agent outputs for reusable patterns.
 
 **Examples:**
-*   LuxeStream Grader learns: "Hermès Togo leather develops a distinct grain pattern when worn — this is patina, not damage."
+*   Provenance Grader learns: "Hermès Togo leather develops a distinct grain pattern when worn — this is patina, not damage."
 *   Social Bot learns: "Posts with questions in the first line get 2.3x more engagement on X."
 *   SafetyOS learns: "Images with text overlay in the bottom-right corner are 4x more likely to contain watermarked copyrighted content."
 
@@ -127,7 +127,7 @@ Patterns are stored in PostgreSQL with pgvector embeddings for semantic retrieva
 **Storage Payload:**
 ```json
 {
-  "source_swarm": "luxestream",
+  "source_swarm": "provenance",
   "domain": "authentication",
   "pattern_type": "BRAND_QUIRK",
   "content": {
@@ -164,7 +164,7 @@ Retrieved patterns are injected into agent context via the `formicContext` field
         "type": "BRAND_QUIRK",
         "summary": "Chanel serial codes moved from inside the flap to inside the pocket in 2021",
         "fitness": 0.88,
-        "source_swarm": "luxestream",
+        "source_swarm": "provenance",
         "relevance": 0.94
       }
     ]
@@ -181,7 +181,7 @@ Retrieved patterns are injected into agent context via the `formicContext` field
 ### 4.1 Tagging
 
 Every pattern is tagged with:
-*   **`source_swarm`** — The swarm that discovered the pattern (e.g., `luxestream`, `social-bot`, `safety-os`).
+*   **`source_swarm`** — The swarm that discovered the pattern (e.g., `provenance`, `social-bot`, `safety-os`).
 *   **`domain`** — The knowledge domain (e.g., `authentication`, `grading`, `engagement`, `safety`).
 *   **`confidence`** — The source agent's confidence at time of extraction (0.0 - 1.0).
 
@@ -198,7 +198,7 @@ Receiving swarms apply a **domain relevance filter** before injecting patterns i
 
 | Receiving Swarm | High Affinity Domains | Medium Affinity | Low Affinity |
 | :--- | :--- | :--- | :--- |
-| LuxeStream | `grading`, `authentication`, `pricing` | `safety`, `engagement` | `social`, `code` |
+| Provenance | `grading`, `authentication`, `pricing` | `safety`, `engagement` | `social`, `code` |
 | Social Bot | `engagement`, `social`, `content` | `safety`, `brand` | `grading`, `pricing` |
 | SafetyOS | `safety`, `authentication`, `content` | `engagement` | `grading`, `pricing` |
 
@@ -245,7 +245,7 @@ Gene Pool messages use the standard LACP transport layer (see `transport.spec.md
     "x-ttl": 1
   },
   "body": {
-    "mission_id": "gene-pool-sync-luxestream-001",
+    "mission_id": "gene-pool-sync-provenance-001",
     "payload": {
       "type": "PATTERN_PUSH",
       "patterns": [ ... ]
@@ -305,7 +305,7 @@ Patterns that contain PII after redaction would be meaningless (e.g., "Contact [
 
 ### 6.2 Workspace Isolation
 
-**Default:** Patterns only propagate within the same `workspace_id`. A pattern created by LuxeStream in workspace `ws-prod-001` is invisible to swarms in `ws-prod-002`.
+**Default:** Patterns only propagate within the same `workspace_id`. A pattern created by Provenance in workspace `ws-prod-001` is invisible to swarms in `ws-prod-002`.
 
 **Explicit Sharing:** Workspace administrators can mark specific patterns as `shared`, making them available across workspaces within the same organisation. Shared patterns are read-only in receiving workspaces — they cannot be modified or deleted by non-owning swarms.
 

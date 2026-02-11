@@ -1,14 +1,14 @@
-# LACP Talent: LuxeStream (Luxury Retail Listing Platform)
+# LACP Talent: Provenance (Luxury Authentication Pipeline)
 
 ## 1. Overview
 
-**LuxeStream** is a luxury retail listing platform powered by a 6-agent AI swarm. It performs automated condition grading, brand authentication, pricing, and listing copy generation for pre-owned luxury goods — including handbags, shoes, clothing, watches, jewellery, and accessories.
+**Provenance** is a luxury retail listing platform powered by a 6-agent AI swarm. It performs automated condition grading, brand authentication, pricing, and listing copy generation for pre-owned luxury goods — including handbags, shoes, clothing, watches, jewellery, and accessories.
 
-Unlike the original draft (which positioned LuxeStream as a single "Merchant" agent), the production architecture is a **self-contained swarm** that integrates with the broader Formic ecosystem via LACP. Each agent is a domain specialist, and the pipeline is orchestrated by the Formic Coordinator using standard LACP transport.
+Unlike the original draft (which positioned Provenance as a single "Merchant" agent), the production architecture is a **self-contained swarm** that integrates with the broader Formic ecosystem via LACP. Each agent is a domain specialist, and the pipeline is orchestrated by the Formic Coordinator using standard LACP transport.
 
 ## 2. Swarm Architecture
 
-LuxeStream operates a **5-stage sequential pipeline** with 6 specialised agents. Stages 2a and 2b execute in parallel to reduce latency.
+Provenance operates a **5-stage sequential pipeline** with 6 specialised agents. Stages 2a and 2b execute in parallel to reduce latency.
 
 ```
 Stage 1: IDENTIFIER (Scholar)
@@ -58,7 +58,7 @@ Stage 5: QA_REVIEWER (Protector)
 
 ### 4.1 Role Mapping
 
-LuxeStream domain-specific roles map to Formic generic LACP roles:
+Provenance domain-specific roles map to Formic generic LACP roles:
 
 | Domain Role | LACP Role | Justification |
 | :--- | :--- | :--- |
@@ -71,7 +71,7 @@ LuxeStream domain-specific roles map to Formic generic LACP roles:
 
 ### 4.2 Trust Level
 
-All agents operate at `INTERNAL` trust level. LuxeStream does not expose any agent to external egress — all outputs are returned to the calling application, which manages platform publishing separately.
+All agents operate at `INTERNAL` trust level. Provenance does not expose any agent to external egress — all outputs are returned to the calling application, which manages platform publishing separately.
 
 ### 4.3 Context Object
 
@@ -117,7 +117,7 @@ USE_SWARM_GRADING=true
 
 ## 5. Tribunal Integration
 
-LuxeStream defines **5 domain-specific conditions** that trigger a Tribunal review. When triggered, the pipeline pauses and a Tribunal is convened using the standard Commit-Reveal flow (see `../consensus/tribunal.spec.md`).
+Provenance defines **5 domain-specific conditions** that trigger a Tribunal review. When triggered, the pipeline pauses and a Tribunal is convened using the standard Commit-Reveal flow (see `../consensus/tribunal.spec.md`).
 
 ### 5.1 Trigger Conditions
 
@@ -138,7 +138,7 @@ LuxeStream defines **5 domain-specific conditions** that trigger a Tribunal revi
 
 ## 6. Personality System (AAPS)
 
-Each LuxeStream agent has an **OCEAN personality profile** managed by the Agent Adaptive Personality System (AAPS). Refer to `../consensus/personality.spec.md` for the full specification.
+Each Provenance agent has an **OCEAN personality profile** managed by the Agent Adaptive Personality System (AAPS). Refer to `../consensus/personality.spec.md` for the full specification.
 
 ### 6.1 Default Archetypes
 
@@ -151,7 +151,7 @@ Each LuxeStream agent has an **OCEAN personality profile** managed by the Agent 
 | Copywriter | Rogue | 0.9 | 0.4 | 0.8 | 0.7 | 0.2 | 0.75 |
 | QA Reviewer | Protector | 0.5 | 0.9 | 0.3 | 0.3 | 0.6 | 0.18 |
 
-**Calibration Note:** Default archetypes are calibrated so that derived temperatures match the pre-AAPS hardcoded values used in LuxeStream v1. This ensures backward-compatible behaviour when the personality system is first enabled.
+**Calibration Note:** Default archetypes are calibrated so that derived temperatures match the pre-AAPS hardcoded values used in Provenance v1. This ensures backward-compatible behaviour when the personality system is first enabled.
 
 ### 6.2 Personality Evolution
 
@@ -163,7 +163,7 @@ Personality profiles evolve based on three feedback signals:
 
 ## 7. Vision Integration
 
-LuxeStream augments LLM-based agents with dedicated vision models for structured visual analysis.
+Provenance augments LLM-based agents with dedicated vision models for structured visual analysis.
 
 ### 7.1 FashionSigLIP
 
@@ -174,7 +174,7 @@ LuxeStream augments LLM-based agents with dedicated vision models for structured
 
 ### 7.2 Condition Classifier
 
-*   **Architecture:** Fine-tuned vision model trained on LuxeStream's proprietary grading dataset.
+*   **Architecture:** Fine-tuned vision model trained on Provenance's proprietary grading dataset.
 *   **Classes:** 5-class condition prediction (`New`, `Excellent`, `Very Good`, `Good`, `Fair`).
 *   **Usage:** Provides a structured condition signal to the Grader agent, which combines it with its own LLM-based analysis for the final grade.
 *   **Training Data:** ~12,000 labelled images across all categories, with human-verified condition grades.
@@ -187,15 +187,15 @@ LuxeStream augments LLM-based agents with dedicated vision models for structured
 
 ## 8. Cross-Swarm Interactions
 
-LuxeStream does not operate in isolation. Via the Gene Pool (see `../core/gene_pool.spec.md`), learnings propagate to and from other swarms in the ecosystem.
+Provenance does not operate in isolation. Via the Gene Pool (see `../core/gene_pool.spec.md`), learnings propagate to and from other swarms in the ecosystem.
 
 | Pattern Flow | Source | Destination | Example |
 | :--- | :--- | :--- | :--- |
-| Grading patterns | LuxeStream | **TalentOS** (via Gene Pool) | "Chanel caviar leather in good condition typically shows X" — helps styling content generation |
-| Authentication markers | LuxeStream | **SafetyOS** | Counterfeit detection patterns feed into broader safety policies |
-| Pricing trends | LuxeStream | **Deep Value Screener** | Luxury resale pricing data enriches market analysis |
-| Visual guidelines | LuxeStream | **Artifex** | Product photography composition rules derived from high-performing listings |
-| Styling context | TalentOS | **LuxeStream** | Fashion trend data informs Copywriter tone and keyword selection |
-| Safety policies | SafetyOS | **LuxeStream** | Updated counterfeit blacklists injected into Authenticator context |
+| Grading patterns | Provenance | **TalentOS** (via Gene Pool) | "Chanel caviar leather in good condition typically shows X" — helps styling content generation |
+| Authentication markers | Provenance | **SafetyOS** | Counterfeit detection patterns feed into broader safety policies |
+| Pricing trends | Provenance | **Deep Value Screener** | Luxury resale pricing data enriches market analysis |
+| Visual guidelines | Provenance | **Artifex** | Product photography composition rules derived from high-performing listings |
+| Styling context | TalentOS | **Provenance** | Fashion trend data informs Copywriter tone and keyword selection |
+| Safety policies | SafetyOS | **Provenance** | Updated counterfeit blacklists injected into Authenticator context |
 
 **Propagation Mechanism:** All cross-swarm interactions flow through the Gene Pool's async push/pull protocol. No direct swarm-to-swarm communication occurs — the Gene Pool acts as the sole intermediary, ensuring workspace isolation and audit traceability.

@@ -112,7 +112,7 @@ selfReviewPasses = round(1 + C * 3)
 *   A maximally conscientious agent performs 4 self-review passes.
 
 ## 4. Agent Archetypes
-Default personality profiles for LuxeStream swarm agents. These serve as starting points; evolution rules (Section 5) adjust scores over time.
+Default personality profiles for Provenance swarm agents. These serve as starting points; evolution rules (Section 5) adjust scores over time.
 
 | Agent | Archetype | O | C | E | A | N | Temperature | Key Trait |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -159,20 +159,20 @@ Personality profiles are stored in Formic shared memory using the `PREFERENCE` t
 ### 6.1 Key Convention
 
 ```
-luxestream-personality-<role>-current
+provenance-personality-<role>-current
 ```
 
-*   Example: `luxestream-personality-grader-current`
+*   Example: `provenance-personality-grader-current`
 *   Content: JSON-serialised OCEAN vector plus derived parameters.
 
 ### 6.2 Version Snapshots
 A snapshot is taken every **10 evolution events** (not every event — to avoid memory bloat).
 
 ```
-luxestream-personality-<role>-v<version>
+provenance-personality-<role>-v<version>
 ```
 
-*   Example: `luxestream-personality-grader-v30`
+*   Example: `provenance-personality-grader-v30`
 *   Enables rollback if a personality drifts into undesirable territory.
 
 ### 6.3 Storage Format

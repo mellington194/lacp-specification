@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "LACP Tribunal Vote",
-  "description": "Schema for a vote cast by an agent within a Tribunal consensus process.",
+  "description": "Schema for a vote cast by an agent within a Tribunal consensus process. Updated v2 with personality-weighted fields.",
   "type": "object",
   "required": [
     "agent_id",
@@ -19,8 +19,13 @@
     },
     "role": {
       "type": "string",
-      "enum": ["REVIEWER", "SECURITY", "ARCHITECT", "TESTER", "EXPLORER", "BUILDER", "VALIDATOR", "DOCUMENTER", "COACH", "ANALYST", "TREASURER", "ARCHIVIST"],
+      "enum": ["REVIEWER", "SECURITY", "ARCHITECT", "TESTER", "IDENTIFIER", "GRADER", "AUTHENTICATOR", "APPRAISER", "COPYWRITER", "QA_REVIEWER"],
       "description": "The specialized role of the agent."
+    },
+    "archetype": {
+      "type": "string",
+      "enum": ["SCHOLAR", "SENTINEL", "PALADIN", "MERCHANT", "ROGUE", "PROTECTOR"],
+      "description": "The personality archetype assigned to this agent (AAPS)."
     },
     "verdict": {
       "type": "string",
@@ -33,6 +38,13 @@
       "maximum": 1.0,
       "description": "Self-reported confidence score in the verdict."
     },
+    "vote_weight": {
+      "type": "number",
+      "minimum": 0.5,
+      "maximum": 1.5,
+      "default": 1.0,
+      "description": "Personality-derived tribunal vote weight (from OCEAN scores). Default 1.0 for unweighted consensus."
+    },
     "reasoning": {
       "type": "string",
       "description": "Natural language explanation of the decision."
@@ -44,20 +56,26 @@
       },
       "description": "High-dimensional vector representation of the reasoning for sycophancy detection."
     },
+    "personality_snapshot": {
+      "type": "object",
+      "description": "Optional snapshot of the agent's OCEAN scores at vote time for audit trail.",
+      "properties": {
+        "openness": { "type": "number", "minimum": 0.05, "maximum": 0.95 },
+        "conscientiousness": { "type": "number", "minimum": 0.05, "maximum": 0.95 },
+        "extraversion": { "type": "number", "minimum": 0.05, "maximum": 0.95 },
+        "agreeableness": { "type": "number", "minimum": 0.05, "maximum": 0.95 },
+        "neuroticism": { "type": "number", "minimum": 0.05, "maximum": 0.95 },
+        "version": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "sycophancy_flag": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this vote was flagged as potentially sycophantic by the detector."
+    },
     "salt": {
       "type": "string",
       "description": "Random salt used during the Commit phase (only present in Reveal phase)."
-    },
-    "vote_weight": {
-      "type": "number",
-      "minimum": 0.0,
-      "maximum": 2.0,
-      "default": 1.0,
-      "description": "Personality-derived vote weight. Calculated from agent's OCEAN Conscientiousness dimension. Default 1.0 for backwards compatibility. See consensus/personality.spec.md."
-    },
-    "archetype": {
-      "type": "string",
-      "description": "Agent personality archetype name (e.g., Scholar, Sentinel, Paladin). Informational only."
     }
   }
 }
