@@ -37,9 +37,12 @@
         "SCHOLAR", "SENTINEL", "PALADIN", "MERCHANT", "ROGUE", "PROTECTOR",
         "GYNE", "PHEROMONE", "FORAGER", "MASON", "ERGATE", "INSPECTOR",
         "CARRIER", "TROPHALLAXIS", "REPLETE", "GUARDIAN", "CLEANER",
-        "NURSE", "MORPH", "SOLDIER", "SCOUT", "ANTENNA"
+        "NURSE", "MORPH", "SOLDIER", "SCOUT", "ANTENNA", "STEWARD",
+        "CONVERSATIONALIST", "TREND_HUNTER", "PROCESSOR", "ARTIST", "TIMEKEEPER",
+        "COMMANDER", "STORYTELLER", "PERFORMER", "CRAFTSMAN",
+        "QUANT", "EXAMINER", "STRATEGIST"
       ],
-      "description": "The personality archetype assigned to this agent (AAPS). Includes both named archetypes and ant-colony archetypes."
+      "description": "The personality archetype assigned to this agent (AAPS). Includes Formic ant-colony archetypes and domain-specific archetypes from Provenance, TalentOS, Artifex, DVS, and EAC-Vision swarms."
     },
     "verdict": {
       "type": "string",
@@ -55,7 +58,7 @@
     "vote_weight": {
       "type": "number",
       "minimum": 0.5,
-      "maximum": 1.5,
+      "maximum": 1.2,
       "default": 1.0,
       "description": "Personality-derived tribunal vote weight (from OCEAN scores). Default 1.0 for unweighted consensus."
     },
