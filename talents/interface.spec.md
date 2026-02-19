@@ -10,5 +10,5 @@ All LACP-compliant agents ("Talents") must implement this interface to participa
 
 ## 3. Identity
 Each talent must possess:
-*   **Role:** One of `REVIEWER`, `SECURITY`, `ARCHITECT`, `TESTER`.
+*   **Role:** One of `REVIEWER`, `SECURITY`, `ARCHITECT`, `TESTER`, `EXPLORER`, `BUILDER`, `VALIDATOR`, `DOCUMENTER`, `COACH`, `ANALYST`, `TREASURER`, `ARCHIVIST`.
 *   **Trust Level:** `INTERNAL` vs `EXTERNAL`.

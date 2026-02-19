@@ -144,12 +144,12 @@ Each Provenance agent has an **OCEAN personality profile** managed by the Agent 
 
 | Agent | Archetype | O | C | E | A | N | Derived Temp |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Identifier | Scholar | 0.8 | 0.7 | 0.4 | 0.6 | 0.3 | 0.45 |
-| Grader | Sentinel | 0.3 | 0.9 | 0.3 | 0.2 | 0.4 | 0.20 |
-| Authenticator | Paladin | 0.4 | 0.9 | 0.3 | 0.1 | 0.5 | 0.15 |
-| Appraiser | Merchant | 0.6 | 0.7 | 0.6 | 0.5 | 0.4 | 0.40 |
-| Copywriter | Rogue | 0.9 | 0.4 | 0.8 | 0.7 | 0.2 | 0.75 |
-| QA Reviewer | Protector | 0.5 | 0.9 | 0.3 | 0.3 | 0.6 | 0.18 |
+| Identifier | Scholar | 0.80 | 0.75 | 0.50 | 0.60 | 0.30 | ~0.28 |
+| Grader | Sentinel | 0.40 | 0.90 | 0.35 | 0.30 | 0.55 | ~0.14 |
+| Authenticator | Paladin | 0.20 | 0.85 | 0.30 | 0.20 | 0.80 | ~0.05 |
+| Appraiser | Merchant | 0.55 | 0.70 | 0.65 | 0.50 | 0.35 | ~0.32 |
+| Copywriter | Rogue | 0.90 | 0.45 | 0.85 | 0.70 | 0.25 | ~0.82 |
+| QA Reviewer | Protector | 0.30 | 0.95 | 0.40 | 0.25 | 0.70 | ~0.06 |
 
 **Calibration Note:** Default archetypes are calibrated so that derived temperatures match the pre-AAPS hardcoded values used in Provenance v1. This ensures backward-compatible behaviour when the personality system is first enabled.
 

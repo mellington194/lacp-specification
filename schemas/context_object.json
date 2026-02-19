@@ -13,7 +13,7 @@
   "properties": {
     "protocol": {
       "type": "string",
-      "const": "LACP/1.0",
+      "const": "LACP/1.2",
       "description": "Protocol version identifier."
     },
     "mission_id": {
