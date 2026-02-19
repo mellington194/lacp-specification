@@ -19,13 +19,27 @@
     },
     "role": {
       "type": "string",
-      "enum": ["REVIEWER", "SECURITY", "ARCHITECT", "TESTER", "IDENTIFIER", "GRADER", "AUTHENTICATOR", "APPRAISER", "COPYWRITER", "QA_REVIEWER"],
-      "description": "The specialized role of the agent."
+      "enum": [
+        "VISIONARY", "COORDINATOR", "ANALYST", "ARCHITECT", "BUILDER", "TESTER",
+        "REVIEWER", "DEVOPS", "SERVICE_MANAGER", "TREASURER", "SECURITY", "DEVSECOPS",
+        "COACH", "DESIGNER", "DEBUGGER", "EXPLORER", "DOCUMENTER", "CHIEF_OF_STAFF",
+        "IDENTIFIER", "GRADER", "AUTHENTICATOR", "APPRAISER", "COPYWRITER", "QA_REVIEWER",
+        "CHATTER", "CURATOR", "MODERATOR", "MEDIA_WORKER", "SCENE_GENERATOR", "SCHEDULER",
+        "DIRECTOR", "SCRIPTWRITER", "NARRATOR", "EDITOR",
+        "RISK_ASSESSOR", "SENTIMENT_SCANNER", "BACKTESTER",
+        "ASSESSOR", "PLANNER", "AUDITOR"
+      ],
+      "description": "The role of the agent. Must be one of the 18 canonical LACP roles or a domain-specific role that maps to a canonical role."
     },
     "archetype": {
       "type": "string",
-      "enum": ["SCHOLAR", "SENTINEL", "PALADIN", "MERCHANT", "ROGUE", "PROTECTOR"],
-      "description": "The personality archetype assigned to this agent (AAPS)."
+      "enum": [
+        "SCHOLAR", "SENTINEL", "PALADIN", "MERCHANT", "ROGUE", "PROTECTOR",
+        "GYNE", "PHEROMONE", "FORAGER", "MASON", "ERGATE", "INSPECTOR",
+        "CARRIER", "TROPHALLAXIS", "REPLETE", "GUARDIAN", "CLEANER",
+        "NURSE", "MORPH", "SOLDIER", "SCOUT", "ANTENNA"
+      ],
+      "description": "The personality archetype assigned to this agent (AAPS). Includes both named archetypes and ant-colony archetypes."
     },
     "verdict": {
       "type": "string",
