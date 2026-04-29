@@ -4,7 +4,7 @@ LACP Defensive Publication Bundle
 Version: 3.0 (February 2026)
 
 This bundle contains the technical details, schemas, and specifications for the
-LLM-Agent Communication Protocol (LACP) and the associated Tribunal Consensus mechanism.
+Lightweight Agentic Communication Protocol (LACP) and the associated Tribunal Consensus mechanism.
 
 v3.0 merges the original defensive publication (v1.0, January 2026) with the Zenodo
 technical disclosure (v2.0, February 2026) into a single canonical document containing:
